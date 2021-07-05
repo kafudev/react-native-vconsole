@@ -1,17 +1,16 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import Vconsole from 'react-native-vconsole';
+import Vconsole from '@kafudev/react-native-vconsole';
 
 export default function App() {
   const [result, setResult] = React.useState<number | undefined>();
 
-  React.useEffect(() => {
-    Vconsole.multiply(3, 7).then(setResult);
-  }, []);
+  React.useEffect(() => {}, []);
 
   return (
     <View style={styles.container}>
+      <Vconsole />
       <Text>Result: {result}</Text>
     </View>
   );
