@@ -71,7 +71,7 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
     if (props.console) {
       this.state.panels.unshift({
         title: 'Log',
-        component: require('./src/console'),
+        component: require('./modules/console'),
       });
     }
 
