@@ -12,7 +12,7 @@ export function throttle(
     noTrailing = undefined;
   }
 
-  function wrapper(...args: []) {
+  function wrapper(...args: any) {
     const elapsed = Number(new Date()) - lastExec;
     function exec() {
       lastExec = Number(new Date());

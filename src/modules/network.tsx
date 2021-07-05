@@ -156,13 +156,15 @@ class AjaxStack {
   }
 
   notify(args?: any) {
-    this.listeners.forEach((callback) => {
-      callback(args);
-    });
+    if (this.listeners && this.listeners[0]) {
+      this.listeners.forEach((callback) => {
+        callback(args);
+      });
+    }
   }
 
   attach(callback: any) {
-    this.listeners.push(callback);
+    this.listeners && this.listeners.push(callback);
   }
 }
 

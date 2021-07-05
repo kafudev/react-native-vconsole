@@ -55,14 +55,16 @@ class LogStack {
   }
 
   notify() {
-    this.listeners.forEach((callback) => {
-      callback();
-    });
+    if (this.listeners && this.listeners[0]) {
+      this.listeners.forEach((callback) => {
+        callback();
+      });
+    }
   }
 
   // @ts-ignore
   attach(callback) {
-    this.listeners.push(callback);
+    this.listeners && this.listeners.push(callback);
   }
 }
 
