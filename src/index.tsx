@@ -147,10 +147,15 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
     }
   };
 
-  showFps = (isShow = true) => {
-    if (NativeModules.Common && NativeModules.Common.showFps) {
-      NativeModules.Common.showFps(isShow);
-    }
+  showFpsPanel = () => {
+    let isShow = this.state.showFps;
+    this.setState({
+      showFps: !isShow,
+    },()=>{
+      if (NativeModules.Common && NativeModules.Common.showFps) {
+        NativeModules.Common.showFps(isShow);
+      }
+    });
   };
 
   renderPanelHeader() {
@@ -201,14 +206,12 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
             <Text style={styles.panelBottomBtnText}>Reload</Text>
           </TouchableOpacity>
         ) : null}
-        {__DEV__ ? (
           <TouchableOpacity
-            onPress={this.showFps.bind(this, !this.state.showFps)}
+            onPress={this.showFpsPanel}
             style={styles.panelBottomBtn}
           >
             <Text style={styles.panelBottomBtnText}>Fps</Text>
           </TouchableOpacity>
-        ) : null}
         <TouchableOpacity
           onPress={this.togglePanel}
           style={styles.panelBottomBtn}
