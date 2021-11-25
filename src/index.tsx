@@ -95,6 +95,7 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
           useNativeDriver: false,
         }
       ),
+      // @ts-ignore
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onPanResponderRelease: ({ nativeEvent }, gestureState) => {
         // console.log('onPanResponderRelease nativeEvent', nativeEvent);

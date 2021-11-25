@@ -1,4 +1,4 @@
-import React, { Component, Ref } from 'react';
+import React, { Component } from 'react';
 import {
   FlatList,
   ScrollView,
@@ -92,17 +92,14 @@ class LogStack {
 
 interface Props {}
 
-interface State {
+interface StateType {
   logs: {
     method(): void;
     data: string;
     time: string;
     id: string;
+    index: number;
   }[];
-}
-
-interface StateType {
-  logs: [];
   filterLevel: string;
   filterValue: string;
 }
