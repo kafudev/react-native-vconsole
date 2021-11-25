@@ -34,7 +34,7 @@ class AjaxStack {
     this.requests = {};
     this.maxLength = 200;
     this.listeners = [];
-    this.notify = debounce(10, false, this.notify);
+    // this.notify = debounce(10, false, this.notify);
   }
 
   getRequestIds() {
@@ -156,11 +156,13 @@ class AjaxStack {
   }
 
   notify(args?: any) {
-    if (this.listeners && this.listeners[0]) {
-      this.listeners.forEach((callback) => {
-        callback(args);
-      });
-    }
+    this.notify = debounce(500, false, () => {
+      if (this.listeners && this.listeners[0]) {
+        this.listeners.forEach((callback) => {
+          callback(args);
+        });
+      }
+    });
   }
 
   attach(callback: any) {
@@ -252,8 +254,8 @@ class Network extends Component<Props, State> {
               this.textInput = ref;
             }}
             style={styles.filterValueBarInput}
-            placeholderTextColor="#000000a1"
-            placeholder="After entering the content, please submit to filter..."
+            // placeholderTextColor="#000000a1"
+            placeholder="Enter the content, please submit to filter..."
             onSubmitEditing={({ nativeEvent }) => {
               if (nativeEvent) {
                 this.regInstance = new RegExp(nativeEvent.text, 'ig');
@@ -504,7 +506,7 @@ const styles = StyleSheet.create({
   },
   filterValueBar: {
     borderColor: '#eee',
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     height: 40,
   },
@@ -538,7 +540,9 @@ const styles = StyleSheet.create({
     borderColor: '#eee',
     borderWidth: StyleSheet.hairlineWidth,
     paddingHorizontal: 2,
-    paddingVertical: 4,
+    // paddingVertical: 4,
+    // paddingHorizontal: 0,
+    // borderWidth: 0
   },
   nwHBoxTouch: {
     width: 90,

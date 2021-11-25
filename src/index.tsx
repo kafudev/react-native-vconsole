@@ -95,8 +95,9 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
           useNativeDriver: false,
         }
       ),
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onPanResponderRelease: ({ nativeEvent }, gestureState) => {
-        console.log('onPanResponderRelease nativeEvent', nativeEvent);
+        // console.log('onPanResponderRelease nativeEvent', nativeEvent);
         if (Math.abs(gestureState.dx) < 5 && Math.abs(gestureState.dy) < 5)
           this.togglePanel();
         InteractionManager.runAfterInteractions(() => {
@@ -124,7 +125,21 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
   };
 
   showDevPanel = () => {
-    NativeModules.DevMenu.show();
+    this.togglePanel();
+    if (NativeModules.DevMenu) {
+      NativeModules.DevMenu.show();
+    } else if (NativeModules.Common) {
+      NativeModules.Common.showDevMenu();
+    }
+  };
+
+  reloadJs = () => {
+    this.togglePanel();
+    if (NativeModules.DevSettings) {
+      NativeModules.DevSettings.reload();
+    } else if (NativeModules.Common) {
+      NativeModules.Common.reloadJs();
+    }
   };
 
   renderPanelHeader() {
@@ -165,6 +180,14 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
             style={styles.panelBottomBtn}
           >
             <Text style={styles.panelBottomBtnText}>Dev</Text>
+          </TouchableOpacity>
+        ) : null}
+        {__DEV__ ? (
+          <TouchableOpacity
+            onPress={this.reloadJs}
+            style={styles.panelBottomBtn}
+          >
+            <Text style={styles.panelBottomBtnText}>Reload</Text>
           </TouchableOpacity>
         ) : null}
         <TouchableOpacity
