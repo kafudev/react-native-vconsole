@@ -27,6 +27,7 @@ interface PropsType {
     title: string;
     component: React.ReactNode;
   };
+  showBtn?: boolean;
 }
 
 interface StateType {
@@ -44,6 +45,7 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
   static defaultProps = {
     appInfo: {},
     console: true,
+    showBtn: true,
   };
 
   private panResponder: PanResponderInstance;
@@ -234,7 +236,11 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
   }
 
   render() {
-    return this.state.showPanel ? this.renderPanel() : this.renderHomeBtn();
+    return this.state.showPanel
+      ? this.renderPanel()
+      : this.props.showBtn
+      ? this.renderHomeBtn()
+      : null;
   }
 }
 
