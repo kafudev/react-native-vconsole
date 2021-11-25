@@ -75,7 +75,7 @@ class LogStack {
   }
 
   notify() {
-    this.notify = debounce(200, false, () => {
+    this.notify = debounce(350, false, () => {
       if (this.listeners && this.listeners[0]) {
         this.listeners.forEach((callback) => {
           callback();
@@ -107,6 +107,7 @@ interface StateType {
 class Console extends Component<Props, StateType> {
   private name: string;
   private textInput: any;
+  private flatList: any;
   private mountState: boolean;
   private regInstance: any;
 
@@ -155,7 +156,14 @@ class Console extends Component<Props, StateType> {
     return (
       <View>
         <View style={{ flexDirection: 'row', backgroundColor: '#fff' }}>
-          <Text style={styles.headerText}>({count})Index</Text>
+          <TouchableOpacity
+            style={{ flexDirection: 'row', flex: 1 }}
+            onPress={() => {
+              this.flatList.scrollToEnd();
+            }}
+          >
+            <Text style={styles.headerText}>({count})Index</Text>
+          </TouchableOpacity>
           <Text style={styles.headerText}>Method</Text>
           <View
             style={[
@@ -293,7 +301,11 @@ class Console extends Component<Props, StateType> {
   render() {
     return (
       <FlatList
+        ref={(ref) => {
+          this.flatList = ref;
+        }}
         initialNumToRender={20}
+        stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator
         extraData={this.state}
         data={this.state.logs}

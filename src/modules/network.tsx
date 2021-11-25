@@ -158,7 +158,7 @@ class AjaxStack {
   }
 
   notify(args?: any) {
-    this.notify = debounce(500, false, () => {
+    this.notify = debounce(350, false, () => {
       if (this.listeners && this.listeners[0]) {
         this.listeners.forEach((callback) => {
           callback(args);
@@ -200,8 +200,10 @@ class Network extends Component<Props, State> {
       requests: {},
       filterValue: '',
     };
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ajaxStack.attach((currentRequest: any) => {
-      console.log('ajaxStack currentRequest', currentRequest);
+      // console.log('ajaxStack currentRequest', currentRequest);
       if (this.mountState) {
         this.setState({
           requestIds: ajaxStack.getRequestIds(),
@@ -237,9 +239,16 @@ class Network extends Component<Props, State> {
     return (
       <View>
         <View style={styles.nwHeader}>
-          <Text style={[styles.nwHeaderTitle, styles.flex3, styles.bold]}>
-            ({count})Host
-          </Text>
+          <TouchableOpacity
+            style={{ flexDirection: 'row', flex: 3 }}
+            onPress={() => {
+              this.flatList.scrollToEnd();
+            }}
+          >
+            <Text style={[styles.nwHeaderTitle, styles.flex3, styles.bold]}>
+              ({count})Host
+            </Text>
+          </TouchableOpacity>
           <Text style={[styles.nwHeaderTitle, styles.flex1, styles.bold]}>
             Method
           </Text>
