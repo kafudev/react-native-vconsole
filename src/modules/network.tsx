@@ -6,9 +6,11 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
   View,
 } from 'react-native';
 import JsonTree from 'react-native-json-tree';
+import dayjs from 'dayjs';
 import event from './event';
 import { debounce } from './tool';
 import theme from './theme';
@@ -284,6 +286,10 @@ class Network extends Component<Props, State> {
       }
     );
   };
+  copyText(text: string) {
+    Clipboard.setString(text);
+    Alert.alert('Info', 'Copy successfully', [{ text: 'OK' }]);
+  }
 
   copy2cURL(item: any) {
     let headerStr = '';
@@ -299,6 +305,7 @@ class Network extends Component<Props, State> {
     if (item.method === 'POST' && item.postData)
       cURL += ` --data-binary '${item.postData}'`;
     Clipboard.setString(cURL);
+    Alert.alert('Info', 'Copy successfully', [{ text: 'OK' }]);
   }
 
   retryFetch(item: any) {
@@ -379,7 +386,16 @@ class Network extends Component<Props, State> {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
+                  Clipboard.setString(JSON.stringify(_item.getData));
+                  Alert.alert('Info', 'Copy successfully', [{ text: 'OK' }]);
+                }}
+              >
+                <Text>[ Copy request query to clipboard ]</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
                   Clipboard.setString(_item.response);
+                  Alert.alert('Info', 'Copy successfully', [{ text: 'OK' }]);
                 }}
               >
                 <Text>[ Copy response to clipboard ]</Text>
@@ -391,15 +407,25 @@ class Network extends Component<Props, State> {
               </Text>
               <View style={styles.nwDetailItem}>
                 <Text>URL:</Text>
-                <Text>{_item.url}</Text>
+                <TouchableOpacity
+                  onLongPress={() => {
+                    this.copyText(_item.url);
+                  }}
+                >
+                  <Text>{_item.url}</Text>
+                </TouchableOpacity>
               </View>
               <View style={styles.nwDetailItem}>
                 <Text>startTime:</Text>
-                <Text>{_item.startTime}</Text>
+                <Text>{`${dayjs(_item.startTime).format(
+                  'YYYY-M-D HH:mm:ss SSS'
+                )}`}</Text>
               </View>
               <View style={styles.nwDetailItem}>
-                <Text>endTime:</Text>
-                <Text>{_item.endTime}</Text>
+                <Text> endTime:</Text>
+                <Text>{`${dayjs(_item.endTime).format(
+                  'YYYY-M-D HH:mm:ss SSS'
+                )}`}</Text>
               </View>
             </View>
             {_item.reqHeaders && (
@@ -410,7 +436,13 @@ class Network extends Component<Props, State> {
                 {Object.keys(_item.reqHeaders).map((key) => (
                   <View style={styles.nwDetailItem} key={key}>
                     <Text>{key}:</Text>
-                    <Text>{_item.reqHeaders[key]}</Text>
+                    <TouchableOpacity
+                      onLongPress={() => {
+                        this.copyText(_item.reqHeaders[key]);
+                      }}
+                    >
+                      <Text>{_item.reqHeaders[key]}</Text>
+                    </TouchableOpacity>
                   </View>
                 ))}
               </View>
@@ -423,7 +455,13 @@ class Network extends Component<Props, State> {
                 {Object.keys(_item.resHeaders).map((key) => (
                   <View style={styles.nwDetailItem} key={key}>
                     <Text>{key}:</Text>
-                    <Text>{_item.resHeaders[key]}</Text>
+                    <TouchableOpacity
+                      onLongPress={() => {
+                        this.copyText(_item.resHeaders[key]);
+                      }}
+                    >
+                      <Text>{_item.resHeaders[key]}</Text>
+                    </TouchableOpacity>
                   </View>
                 ))}
               </View>
@@ -525,8 +563,14 @@ const styles = StyleSheet.create({
   flex1: {
     flex: 1,
   },
+  flex2: {
+    flex: 2,
+  },
   flex3: {
     flex: 3,
+  },
+  flex4: {
+    flex: 4,
   },
   nwDetailItem: {
     flexDirection: 'row',
