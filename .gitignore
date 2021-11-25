@@ -1,5 +1,6 @@
 .env
 .npmrc
+*.prefs
 # OSX
 #
 .DS_Store

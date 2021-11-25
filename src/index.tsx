@@ -36,6 +36,7 @@ interface StateType {
     component: React.ReactNode;
   }[];
   showPanel: boolean;
+  showFps: boolean;
   currentPanelTab: number;
   pan: ValueXY;
   scale: Value;
@@ -65,6 +66,7 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
         },
       ],
       showPanel: false,
+      showFps: false,
       currentPanelTab: 0,
       pan: new Animated.ValueXY(),
       scale: new Animated.Value(1),
@@ -129,19 +131,25 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
 
   showDevPanel = () => {
     this.togglePanel();
-    if (NativeModules.DevMenu) {
+    if (NativeModules.DevMenu && NativeModules.DevMenu.show) {
       NativeModules.DevMenu.show();
-    } else if (NativeModules.Common) {
+    } else if (NativeModules.Common && NativeModules.Common.showDevMenu) {
       NativeModules.Common.showDevMenu();
     }
   };
 
   reloadJs = () => {
     this.togglePanel();
-    if (NativeModules.DevSettings) {
+    if (NativeModules.DevSettings && NativeModules.DevSettings.reload) {
       NativeModules.DevSettings.reload();
-    } else if (NativeModules.Common) {
+    } else if (NativeModules.Common && NativeModules.Common.reloadJs) {
       NativeModules.Common.reloadJs();
+    }
+  };
+
+  showFps = (isShow = true) => {
+    if (NativeModules.Common && NativeModules.Common.showFps) {
+      NativeModules.Common.showFps(isShow);
     }
   };
 
@@ -191,6 +199,14 @@ class RNVConsole extends PureComponent<PropsType, StateType> {
             style={styles.panelBottomBtn}
           >
             <Text style={styles.panelBottomBtnText}>Reload</Text>
+          </TouchableOpacity>
+        ) : null}
+        {__DEV__ ? (
+          <TouchableOpacity
+            onPress={this.showFps.bind(this, !this.state.showFps)}
+            style={styles.panelBottomBtn}
+          >
+            <Text style={styles.panelBottomBtnText}>Fps</Text>
           </TouchableOpacity>
         ) : null}
         <TouchableOpacity
