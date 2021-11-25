@@ -157,7 +157,7 @@ class Console extends Component<Props, StateType> {
       <View>
         <View style={{ flexDirection: 'row', backgroundColor: '#fff' }}>
           <TouchableOpacity
-            style={{ flexDirection: 'row', flex: 1 }}
+            style={{ flexDirection: 'row', flex: 1.2 }}
             onPress={() => {
               this.flatList.scrollToEnd();
             }}
