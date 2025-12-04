@@ -75,13 +75,9 @@ class LogStack {
   }
 
   notify() {
-    this.notify = debounce(350, false, () => {
-      if (this.listeners && this.listeners[0]) {
-        this.listeners.forEach((callback) => {
-          callback();
-        });
-      }
-    });
+    if (this.listeners.length > 0) {
+      this.listeners.forEach(callback => callback());
+    }
   }
 
   // @ts-ignore
